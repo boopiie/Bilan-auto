@@ -175,7 +175,7 @@ rang_percentile_corresp = {
 
 def get_category(rang_percentile):
     for (min_val, max_val), category in rang_percentile_corresp.items():
-        if min_val <= rang_percentile <= max_val:
+        if min_val <= int(rang_percentile) <= max_val:
             return category
     return "Rang percentile invalide."
 
@@ -253,7 +253,7 @@ def total(note):
 # Fonctions pour génerer chaque partie du texte
 #************************************************************
 
-def cadrePrésentation(nom, prenom, date_naiss, age, lat, date):
+def cadrePrésentation(nom, prenom, date_naiss, age, lat, date, doc):
     # Premier cadre
     table = doc.add_table(rows=1, cols=1)
     table.style = 'Table Grid'
@@ -303,7 +303,7 @@ def notes_compo_principales(ENS_CV, ENS_V, ENS_RF, ENS_MDT, ENS_VT, ENS_ET,
                             NC_CV, NC_V, NC_RF, NC_MDT, NC_VT, NC_ET,
                             RP_CV, RP_V, RP_RF, RP_MDT, RP_VT, RP_ET,
                             IDC_CV, IDC_V, IDC_RF, IDC_MDT, IDC_VT, IDC_ET,
-                            DQ_CV, DQ_V, DQ_RF, DQ_MDT, DQ_VT, DQ_ET):
+                            DQ_CV=None, DQ_V=None, DQ_RF=None, DQ_MDT=None, DQ_VT=None, DQ_ET=None):
     # Add table with 7 columns and 7 rows
     table = doc.add_table(rows=7, cols=7)
     table.style = 'Table Grid'
