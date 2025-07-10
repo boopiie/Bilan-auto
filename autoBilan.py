@@ -250,7 +250,7 @@ def total(note):
         return "difficultés exécutives nettement atypique"
 
 #************************************************************
-# Fonctions pour génerer chaque partie du texte
+# Fonctions pour génerer chaques parties du texte
 #************************************************************
 
 def cadrePrésentation(nom, prenom, date_naiss, age, lat, date, doc):
@@ -303,7 +303,46 @@ def notes_compo_principales(ENS_CV, ENS_V, ENS_RF, ENS_MDT, ENS_VT, ENS_ET,
                             NC_CV, NC_V, NC_RF, NC_MDT, NC_VT, NC_ET,
                             RP_CV, RP_V, RP_RF, RP_MDT, RP_VT, RP_ET,
                             IDC_CV, IDC_V, IDC_RF, IDC_MDT, IDC_VT, IDC_ET,
-                            DQ_CV=None, DQ_V=None, DQ_RF=None, DQ_MDT=None, DQ_VT=None, DQ_ET=None):
+                            prenom):
+    # Bilan psychométrique
+
+    # Cadre
+    table2 = doc.add_table(rows=1, cols=1)
+
+    cell2 = table2.cell(0, 0)
+    cadre2 = cell2.add_paragraph()
+    cadre2.alignment = 1
+    texteGras = cadre2.add_run("Fonctionnement intellectuel global (WISC V)")
+    texteGras.bold = True
+    # Capacité cognitives globales
+    CapCo = doc.add_paragraph()
+    CapCo = doc.add_paragraph()
+    # Texte bleu
+    texteBleu2 = CapCo.add_run("Capacités cognitives globales ")
+    texteBleu2.bold = True
+    texteBleu2.font.color.rgb = RGBColor(0, 100, 255)  # Couleur
+    texteBleu2.underline = True
+    CapCo = doc.add_paragraph()
+    texteWISC = CapCo.add_run("Le WISC-V est utilisé pour mesurer les habiletés générales de raisonnement des " \
+    "enfants de 6 à 16 ans. Cette  évaluation fournit un score qui représente la capacité intellectuelle globale" \
+    " de l’enfant (QIT), ainsi que des  scores d’indice qui mesurent les domaines suivants du fonctionnement" \
+    " cognitif : compréhension verbale  (ICV), traitement visuospatial (IVS), raison fluide (IRF), mémoire de" \
+    " travail (IMT) et vitesse de traitement  (IVT). ")
+    texteWISC.italic = True
+    CapCo = doc.add_paragraph()
+    run("L’évaluation intellectuelle réalisée à l’aide du WISC-V met " \
+    "en évidence un profil présentant des capacités  intellectuelles hétérogènes." \
+    " En effet, l’hétérogénéité significative de son profil ne nous permet pas de " \
+    f"calculer  un QIT chez {prenom}. En effet, des différences statistiquement significatives " \
+    "apparaissent entre plusieurs scores  d’indices. Alors, la note d’échelle totale"
+    " (QIT) – qui représente les aptitudes intellectuelles globales – ne peut " \
+    f" nous permettre de comprendre le fonctionnement de {prenom}. L’étude des forces " \
+    "et des faiblesses est préconisée  pour mieux comprendre son profil cognitif. ", CapCo)
+
+    # Ajouter un titre centré et en italique
+    titre = doc.add_paragraph("Synthèse des notes composites principales")
+    titre.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    titre.runs[0].italic = True
     # Add table with 7 columns and 7 rows
     table = doc.add_table(rows=7, cols=7)
     table.style = 'Table Grid'
@@ -427,8 +466,8 @@ def capacite_verbal(ICV, RP, note_stand_simi, rang_per_simi, note_stand_vocab, r
         "La note composite de compréhension verbale ",
         f"(ICV = {ICV}, RP = {RP}) ",
         "se situe dans la ",
-        "moyenne ",
-        "comparaison aux enfants du même âge."
+        get_category(RP),
+        " comparaison aux enfants du même âge."
     )
 
     # Tableau : Epreuve, Notes standards, Rang Percentile
@@ -535,8 +574,8 @@ def visuo_spatial(IVS, RP, note_stand_cube, rang_per_cube, note_stand_puzz, rang
         "Dans ce domaine ",
         f"(IVS = {str(IVS)}, RP = {str(RP)}) ",
         f"{prenom} possède des capacités visuo-constructives, d’analyse visuo spatiale, et de résolution de problème dans la ",
-        "moyenne ",
-        "de son âge."
+        get_category(RP),
+        " de son âge."
     )
 
     # Tableau Epreuve cubes puzzle
@@ -595,7 +634,24 @@ def visuo_spatial(IVS, RP, note_stand_cube, rang_per_cube, note_stand_puzz, rang
 
     run4 = para.add_run(get_category(rang_per_cube))
     run4.bold = True
-    run5 = para.add_run(f" de son âge. {prenom} montre de bonnes capacités dans l’organisation spatiale des modèles. Malgré de bon résultats, {prenom} présente des difficultés de motricité fine dans cette épreuve pour manipuler les cubes.")
+
+    if get_category(rang_per_cube) == "zone faible":
+        run5 = para.add_run(f" de son âge. {prenom} montre des difficultés dans l’organisation spatiale des modèles et dans la visuo-construction.")
+    
+    if get_category(rang_per_cube) == "moyenne faible":
+        run5 = para.add_run(f" de son âge. {prenom} présente des fragilités dans l’organisation spatiale des modèles et la visuo-construction.")
+    
+    if get_category(rang_per_cube) == "moyenne":
+        run5 = para.add_run(f" de son âge. {prenom} montre de bonnes capacités dans l’organisation spatiale des modèles et dans la visuo-construction.")
+    
+    if get_category(rang_per_cube) == "moyenne forte":
+        run5 = para.add_run(f" de son âge. {prenom} montre de bonnes capacités dans l’organisation spatiale des modèles et dans la visuo-construction.")
+    
+    if get_category(rang_per_cube) == "zone élevée":
+        run5 = para.add_run(f" de son âge. {prenom} montre de très bonnes capacités dans l’organisation spatiale des modèles et dans la visuo-construction.")
+    
+    if get_category(rang_per_cube) == "zone très élevée":
+        run5 = para.add_run(f" de son âge. {prenom} montre d’excellentes capacités dans l’organisation spatiale des modèles et dans la visuo-construction.")
 
     # Paragraphe descriptif "Puzzles visuels"
     ajouter_paragraphe(
@@ -641,7 +697,7 @@ def raisonnement_fluide(IRF, RP, note_stand_mat, rang_per_mat, note_stand_bal, r
         "Les capacités de raisonnement fluides",
         f" (IRF = {IRF}, RP = {RP})",
         " telles que mesurées par le WISC-V, apparaissent ce jour, dans la ",
-        "moyenne ",
+        get_category(RP),
         "pour son âge."
     )
 
@@ -751,7 +807,7 @@ def memoire_de_travail(IMT, RP, note_stand_chiffre, rang_per_chiffre, note_stand
         "Les résultats à cet indice (",
         f"IMT = {IMT}, RP = {RP}",
         ") témoigne d’une mémoire de travail dans la ",
-        "moyenne faible ",
+        get_category(RP),
         "de son âge"
     )
 
@@ -820,7 +876,7 @@ def memoire_de_travail(IMT, RP, note_stand_chiffre, rang_per_chiffre, note_stand
         "Mémoire des chiffres ",
         f"», {prenom} présente des performances dans la ",
         get_category(note_stand_chiffre),
-        f"de son âge.  {prenom} présente de légères difficulté en mémoire à court terme sur un support auditif. Il semblerait que les tâches  sérielles et de même nature soient coûteuses pour lui. De plus, il présente de nombreux décrochages  attentionnels avec une attention qui fluctue pendant l’épreuve. {prenom} est debout, il fait du bruit et montre des  difficultés dans la compréhension des consignes."
+        f" de son âge.  {prenom} présente de légères difficulté en mémoire à court terme sur un support auditif. Il semblerait que les tâches  sérielles et de même nature soient coûteuses pour lui. De plus, il présente de nombreux décrochages  attentionnels avec une attention qui fluctue pendant l’épreuve. {prenom} est debout, il fait du bruit et montre des  difficultés dans la compréhension des consignes."
     )
 
     ajouter_paragraphe(
@@ -830,7 +886,7 @@ def memoire_de_travail(IMT, RP, note_stand_chiffre, rang_per_chiffre, note_stand
         "Mémoire des images ",
         f"», {prenom} se situe dans la ",
         get_category(note_stand_image),
-        f"de son âge. {prenom} présente des difficultés en mémoire à court terme sur un support visuel. Lors de cette épreuve, il arrive vite à saturation et  ne semble plus disposer des ressources attentionnelles nécessaire pour continuer l’épreuve."
+        f" de son âge. {prenom} présente des difficultés en mémoire à court terme sur un support visuel. Lors de cette épreuve, il arrive vite à saturation et  ne semble plus disposer des ressources attentionnelles nécessaire pour continuer l’épreuve."
     )
 
     # IMAGE
@@ -864,8 +920,8 @@ def vitesse_de_traitement(IVT, RP, note_stand_code, rang_per_code, note_stand_sy
         "La vitesse de traitement (",
         f"IVT = {IVT}, RP = {RP}",
         "), telle que mesurée par le WISC-V, apparaissent ce jour dans la ",
-        "moyenne faible",
-        "de son âge."
+        get_category(RP),
+        " de son âge."
     )
 
     # Tableau code et symbole

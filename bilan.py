@@ -175,7 +175,8 @@ class MyWidget(QtWidgets.QWidget):
         notes_compo_principales(self.champs_ens_cv.text(), self.champs_ens_v.text(), self.champs_ens_rf.text(), self.champs_ens_mdt.text(), self.champs_ens_vt.text(), self.champs_ens_et.text(),
                             self.champs_nc_cv.text(), self.champs_nc_v.text(), self.champs_nc_rf.text(), self.champs_nc_mdt.text(), self.champs_nc_vt.text(), self.champs_nc_et.text(),
                             self.champs_rp_cv.text(), self.champs_rp_v.text(), self.champs_rp_rf.text(), self.champs_rp_mdt.text(), self.champs_rp_vt.text(), self.champs_rp_et.text(),
-                            self.champs_idc_cv.text(), self.champs_idc_v.text(), self.champs_idc_rf.text(), self.champs_idc_mdt.text(), self.champs_idc_vt.text(), self.champs_idc_et.text())
+                            self.champs_idc_cv.text(), self.champs_idc_v.text(), self.champs_idc_rf.text(), self.champs_idc_mdt.text(), self.champs_idc_vt.text(), self.champs_idc_et.text(),
+                            self.champs_prenom.text())
         doc.save('TestV2.docx')
 
 if __name__ == "__main__":
