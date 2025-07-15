@@ -324,20 +324,20 @@ def notes_compo_principales(ENS_CV, ENS_V, ENS_RF, ENS_MDT, ENS_VT, ENS_ET,
     texteBleu2.underline = True
     CapCo = doc.add_paragraph()
     texteWISC = CapCo.add_run("Le WISC-V est utilisé pour mesurer les habiletés générales de raisonnement des " \
-    "enfants de 6 à 16 ans. Cette  évaluation fournit un score qui représente la capacité intellectuelle globale" \
-    " de l’enfant (QIT), ainsi que des  scores d’indice qui mesurent les domaines suivants du fonctionnement" \
-    " cognitif : compréhension verbale  (ICV), traitement visuospatial (IVS), raison fluide (IRF), mémoire de" \
-    " travail (IMT) et vitesse de traitement  (IVT). ")
+        "enfants de 6 à 16 ans. Cette  évaluation fournit un score qui représente la capacité intellectuelle globale" \
+        " de l’enfant (QIT), ainsi que des  scores d’indice qui mesurent les domaines suivants du fonctionnement" \
+        " cognitif : compréhension verbale  (ICV), traitement visuospatial (IVS), raison fluide (IRF), mémoire de" \
+        " travail (IMT) et vitesse de traitement  (IVT). ")
     texteWISC.italic = True
     CapCo = doc.add_paragraph()
-    run("L’évaluation intellectuelle réalisée à l’aide du WISC-V met " \
-    "en évidence un profil présentant des capacités  intellectuelles hétérogènes." \
-    " En effet, l’hétérogénéité significative de son profil ne nous permet pas de " \
-    f"calculer  un QIT chez {prenom}. En effet, des différences statistiquement significatives " \
-    "apparaissent entre plusieurs scores  d’indices. Alors, la note d’échelle totale"
-    " (QIT) – qui représente les aptitudes intellectuelles globales – ne peut " \
-    f" nous permettre de comprendre le fonctionnement de {prenom}. L’étude des forces " \
-    "et des faiblesses est préconisée  pour mieux comprendre son profil cognitif. ", CapCo)
+    CapCo.add_run("L’évaluation intellectuelle réalisée à l’aide du WISC-V met " \
+        "en évidence un profil présentant des capacités  intellectuelles hétérogènes." \
+        " En effet, l’hétérogénéité significative de son profil ne nous permet pas de " \
+        f"calculer  un QIT chez {prenom}. En effet, des différences statistiquement significatives " \
+        "apparaissent entre plusieurs scores  d’indices. Alors, la note d’échelle totale"
+        " (QIT) – qui représente les aptitudes intellectuelles globales – ne peut " \
+        f" nous permettre de comprendre le fonctionnement de {prenom}. L’étude des forces " \
+        "et des faiblesses est préconisée  pour mieux comprendre son profil cognitif. ")
 
     # Ajouter un titre centré et en italique
     titre = doc.add_paragraph("Synthèse des notes composites principales")
@@ -404,24 +404,24 @@ def indices(IAG, RP1, ICC, RP2, INV, RP3, prenom):
         doc,
         f"L'indice complémentaire d'aptitude générale (IAG = {IAG}, RP = {RP1})",
         ", témoigne d'une capacité à raisonner,de facultés de compréhension, situées dans la ",
-        "moyenne ",
-        "de son âge."
+        get_category(RP1),
+        " de son âge."
     )
     doc.add_paragraph()
     ajouter_paragraphe(
         doc,
         f"L'indice de compétence cognitive (ICC = {ICC}, RP = {RP2}) ",
         "relatif aux traitements de bas niveaux (vitesse detraitement et mémoire de travail) se situe dans la ",
-        "moyenne faible ",
-        "de son âge."
+        get_category(RP2),
+        " de son âge."
     )
     doc.add_paragraph()
     ajouter_paragraphe(
         doc,
         f"L'indice non verbal (INV = {INV}, RP = {RP3}) ",
         "relatif aux compétences non verbales se situe dans la ",
-        "moyenne ",
-        "de son âge."
+        get_category(RP3),
+        " de son âge."
     )
     doc.add_paragraph()
     ajouter_paragraphe(
@@ -437,7 +437,7 @@ def indices(IAG, RP1, ICC, RP2, INV, RP3, prenom):
 # CAPACITE VERBAL
 #************************************************************************************************
 
-def capacite_verbal(ICV, RP, note_stand_simi, rang_per_simi, note_stand_vocab, rang_per_vocab, nom, prenom):
+def capacite_verbal(ICV, RP, note_stand_simi, rang_per_simi, note_stand_vocab, rang_per_vocab, prenom):
     CapVe = doc.add_paragraph()
     # Texte bleu
     # Capacités verbales
@@ -553,7 +553,7 @@ def capacite_verbal(ICV, RP, note_stand_simi, rang_per_simi, note_stand_vocab, r
 # FONCTION VISUO-SPATIAL
 #************************************************************************************************
 
-def visuo_spatial(IVS, RP, note_stand_cube, rang_per_cube, note_stand_puzz, rang_per_puzz, nom, prenom):
+def visuo_spatial(IVS, RP, note_stand_cube, rang_per_cube, note_stand_puzz, rang_per_puzz, prenom):
     # Fonctions visuo-spatiales
     # Texte bleu
     FVS = doc.add_paragraph()
@@ -675,7 +675,7 @@ def visuo_spatial(IVS, RP, note_stand_cube, rang_per_cube, note_stand_puzz, rang
 #************************************************************************************************
 
 
-def raisonnement_fluide(IRF, RP, note_stand_mat, rang_per_mat, note_stand_bal, rang_per_bal, nom, prenom):
+def raisonnement_fluide(IRF, RP, note_stand_mat, rang_per_mat, note_stand_bal, rang_per_bal, prenom):
     # Titre "Raisonnement fluide"
     RF = doc.add_paragraph()
     texteBleu5 = RF.add_run("Raisonnement fluide")
@@ -785,7 +785,7 @@ def raisonnement_fluide(IRF, RP, note_stand_mat, rang_per_mat, note_stand_bal, r
 # MEMOIRE DE TRAVAIL
 #************************************************************************************************
 
-def memoire_de_travail(IMT, RP, note_stand_chiffre, rang_per_chiffre, note_stand_image, rang_per_image, nom, prenom):
+def memoire_de_travail(IMT, RP, note_stand_chiffre, rang_per_chiffre, note_stand_image, rang_per_image, prenom):
     # Texte bleu
     MDT = doc.add_paragraph()
     texteBleu6 = MDT.add_run("Mémoire de travail")
@@ -900,7 +900,7 @@ def memoire_de_travail(IMT, RP, note_stand_chiffre, rang_per_chiffre, note_stand
 # VITESSE DE TRAITEMENT
 #************************************************************************************************
 
-def vitesse_de_traitement(IVT, RP, note_stand_code, rang_per_code, note_stand_symb, rang_per_symb, nom, prenom):
+def vitesse_de_traitement(IVT, RP, note_stand_code, rang_per_code, note_stand_symb, rang_per_symb, prenom):
     # Vitesse de traitement
     VDT = doc.add_paragraph()
     texteBleu6 = VDT.add_run("Vitesse de traitement")

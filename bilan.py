@@ -5,6 +5,8 @@ from PySide6 import QtCore, QtWidgets, QtGui
 from docx import Document
 from autoBilan import *
 from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QVBoxLayout, QGridLayout
+from PySide6.QtCore import QPropertyAnimation, QEasingCurve, QParallelAnimationGroup, QRect
+
 
 print(PySide6.__version__)
 
@@ -46,6 +48,49 @@ class MyWidget(QtWidgets.QWidget):
         self.champs_idc_vt = QtWidgets.QLineEdit()
         self.champs_idc_et = QtWidgets.QLineEdit()
 
+        self.champs_indices_IAG = QtWidgets.QLineEdit()
+        self.champs_indices_rp1 = QtWidgets.QLineEdit()
+        self.champs_indices_ICC = QtWidgets.QLineEdit()
+        self.champs_indices_rp2 = QtWidgets.QLineEdit()
+        self.champs_indices_INV = QtWidgets.QLineEdit()
+        self.champs_indices_rp3 = QtWidgets.QLineEdit()
+
+        self.champs_capacite_verbal_ICV = QtWidgets.QLineEdit()
+        self.champs_capacite_verbal_RP = QtWidgets.QLineEdit()
+        self.champs_capacite_verbal_note_stand_simi = QtWidgets.QLineEdit()
+        self.champs_capacite_verbal_rp_simi = QtWidgets.QLineEdit()
+        self.champs_capacite_verbal_note_stand_vocab = QtWidgets.QLineEdit()
+        self.champs_capacite_verbal_rp_vocab = QtWidgets.QLineEdit()
+
+        self.champs_visuo_spatial_IVS = QtWidgets.QLineEdit()
+        self.champs_visuo_spatial_RP = QtWidgets.QLineEdit()
+        self.champs_visuo_spatial_note_stand_cubes = QtWidgets.QLineEdit()
+        self.champs_visuo_spatial_rp_cubes = QtWidgets.QLineEdit()
+        self.champs_visuo_spatial_note_stand_puzz = QtWidgets.QLineEdit()
+        self.champs_visuo_spatial_rp_puzz = QtWidgets.QLineEdit()
+
+        self.champs_rf_IRF = QtWidgets.QLineEdit()
+        self.champs_rf_RP = QtWidgets.QLineEdit()
+        self.champs_rf_note_stand_mat = QtWidgets.QLineEdit()
+        self.champs_rf_rp_mat = QtWidgets.QLineEdit()
+        self.champs_rf_note_stand_bal = QtWidgets.QLineEdit()
+        self.champs_rf_rp_bal = QtWidgets.QLineEdit()
+
+        self.champs_mdt_IMT = QtWidgets.QLineEdit()
+        self.champs_mdt_RP = QtWidgets.QLineEdit()
+        self.champs_mdt_note_stand_chiffre = QtWidgets.QLineEdit()
+        self.champs_mdt_rp_chiffre = QtWidgets.QLineEdit()
+        self.champs_mdt_note_stand_image = QtWidgets.QLineEdit()
+        self.champs_mdt_rp_image = QtWidgets.QLineEdit()
+
+        self.champs_vdt_IVT = QtWidgets.QLineEdit()
+        self.champs_vdt_RP = QtWidgets.QLineEdit()
+        self.champs_vdt_note_stand_code = QtWidgets.QLineEdit()
+        self.champs_vdt_rp_code = QtWidgets.QLineEdit()
+        self.champs_vdt_note_stand_symb = QtWidgets.QLineEdit()
+        self.champs_vdt_rp_symb = QtWidgets.QLineEdit()
+
+
         # Labels
         self.title_nom = QtWidgets.QLabel("Nom du patient")
         self.title_prenom = QtWidgets.QLabel("Prénom du patient")
@@ -77,6 +122,47 @@ class MyWidget(QtWidgets.QWidget):
         self.title_idc_mdt = QtWidgets.QLabel("Intervalle de Confiance - Mémoire de travail")
         self.title_idc_vt = QtWidgets.QLabel("Intervalle de Confiance - Vitesse de traitement")
         self.title_idc_et = QtWidgets.QLabel("Intervalle de Confiance - Echelle Totale")
+        self.title_indices_IAG = QtWidgets.QLabel("Indice complémentaire d’aptitude générale - IAG")
+        self.title_indices_rp1 = QtWidgets.QLabel("Indice complémentaire d’aptitude générale - Rang percentile")
+        self.title_indices_ICC = QtWidgets.QLabel("Indice de compétence cognitive - ICC")
+        self.title_indices_rp2 = QtWidgets.QLabel("Indice de compétence cognitive - Rang percentile")
+        self.title_indices_INV = QtWidgets.QLabel("Indice non verbal - INV")
+        self.title_indices_rp3 = QtWidgets.QLabel("Indice non verbal - Rang percentile")
+        
+        self.title_capacite_verbal_ICV = QtWidgets.QLabel("L’indice de Compréhension Verbale (ICV)")
+        self.title_capacite_verbal_RP = QtWidgets.QLabel("Capacités verbales - Rang percentile")
+        self.title_capacite_verbal_note_stand_simi = QtWidgets.QLabel("Similitudes - Notes Standards")
+        self.title_capacite_verbal_rp_simi = QtWidgets.QLabel("Similitudes - Rang Percentile")
+        self.title_capacite_verbal_note_stand_vocab = QtWidgets.QLabel("Vocabulaire - Notes Standards")
+        self.title_capacite_verbal_rp_vocab = QtWidgets.QLabel("Vocabulaire - Rang percentile")
+        
+        self.title_visuo_saptial_IVS = QtWidgets.QLabel("L’indice Visuo-Spatial (IVS)")
+        self.title_visuo_saptial_RP = QtWidgets.QLabel("Fonctions visuo-spatiales - Rang percentile")
+        self.title_visuo_saptial_note_stand_cubes = QtWidgets.QLabel("Cubes - Notes Standards")
+        self.title_visuo_saptial_rp_cubes = QtWidgets.QLabel("Cubes - Rang Percentile")
+        self.title_visuo_saptial_note_stand_puzz = QtWidgets.QLabel("Puzzle - Notes Standards")
+        self.title_visuo_saptial_rp_puzz = QtWidgets.QLabel("Puzzle - Rang percentile")
+        
+        self.title_rf_IRF = QtWidgets.QLabel("Indice de raisonnement fluide (IRF)")
+        self.title_rf_RP = QtWidgets.QLabel("Capacités de raisonnement fluides - Rang percentile")
+        self.title_rf_note_stand_mat = QtWidgets.QLabel("Matrices - Notes Standards")
+        self.title_rf_rp_mat = QtWidgets.QLabel("Matrices - Rang Percentile")
+        self.title_rf_note_stand_bal = QtWidgets.QLabel("Balances - Notes Standards")
+        self.title_rf_rp_bal = QtWidgets.QLabel("Balances - Rang percentile")
+        
+        self.title_mdt_IMT = QtWidgets.QLabel("Mémoire de travail (IMT)")
+        self.title_mdt_RP = QtWidgets.QLabel("Mémoire de travail - Rang percentile")
+        self.title_mdt_note_stand_chiffre = QtWidgets.QLabel("Chiffre - Notes Standards")
+        self.title_mdt_rp_chiffre = QtWidgets.QLabel("Chiffre - Rang Percentile")
+        self.title_mdt_note_stand_image = QtWidgets.QLabel("Image - Notes Standards")
+        self.title_mdt_rp_image = QtWidgets.QLabel("Image - Rang percentile")
+
+        self.title_vdt_IVT = QtWidgets.QLabel("Vitesse de traitement (IVT)")
+        self.title_vdt_RP = QtWidgets.QLabel("vitesse de traitement - Rang percentile")
+        self.title_vdt_note_stand_code = QtWidgets.QLabel("Code - Notes Standards")
+        self.title_vdt_rp_code = QtWidgets.QLabel("Code - Rang Percentile")
+        self.title_vdt_note_stand_symb = QtWidgets.QLabel("Symbole - Notes Standards")
+        self.title_vdt_rp_symb = QtWidgets.QLabel("Symbole - Rang percentile")
 
         # --- Zone scrollable setup ---
         content_widget = QtWidgets.QWidget()
@@ -114,6 +200,42 @@ class MyWidget(QtWidgets.QWidget):
             (self.title_idc_mdt, self.champs_idc_mdt),
             (self.title_idc_vt, self.champs_idc_vt),
             (self.title_idc_et, self.champs_idc_et),
+            (self.title_indices_IAG, self.champs_indices_IAG),
+            (self.title_indices_rp1, self.champs_indices_rp1),
+            (self.title_indices_ICC, self.champs_indices_ICC),
+            (self.title_indices_rp2, self.champs_indices_rp2),
+            (self.title_indices_INV, self.champs_indices_INV),
+            (self.title_indices_rp3, self.champs_indices_rp3),
+            (self.title_capacite_verbal_ICV, self.champs_capacite_verbal_ICV),
+            (self.title_capacite_verbal_RP, self.champs_capacite_verbal_RP),
+            (self.title_capacite_verbal_note_stand_simi, self.champs_capacite_verbal_note_stand_simi),
+            (self.title_capacite_verbal_rp_simi, self.champs_capacite_verbal_rp_simi),
+            (self.title_capacite_verbal_note_stand_vocab, self.champs_capacite_verbal_note_stand_vocab),
+            (self.title_capacite_verbal_rp_vocab, self.champs_capacite_verbal_rp_vocab),
+            (self.title_visuo_saptial_IVS, self.champs_visuo_spatial_IVS),
+            (self.title_visuo_saptial_RP, self.champs_visuo_spatial_RP),
+            (self.title_visuo_saptial_note_stand_cubes, self.champs_visuo_spatial_note_stand_cubes),
+            (self.title_visuo_saptial_rp_cubes, self.champs_visuo_spatial_rp_cubes),
+            (self.title_visuo_saptial_note_stand_puzz, self.champs_visuo_spatial_note_stand_puzz),
+            (self.title_visuo_saptial_rp_puzz, self.champs_visuo_spatial_rp_puzz),
+            (self.title_rf_IRF, self.champs_rf_IRF),
+            (self.title_rf_RP, self.champs_rf_RP),
+            (self.title_rf_note_stand_mat, self.champs_rf_note_stand_mat),
+            (self.title_rf_rp_mat, self.champs_rf_rp_mat),
+            (self.title_rf_note_stand_bal, self.champs_rf_note_stand_bal),
+            (self.title_rf_rp_bal, self.champs_rf_rp_bal),
+            (self.title_mdt_IMT, self.champs_mdt_IMT),
+            (self.title_mdt_RP, self.champs_mdt_RP),
+            (self.title_mdt_note_stand_chiffre, self.champs_mdt_note_stand_chiffre),
+            (self.title_mdt_rp_chiffre, self.champs_mdt_rp_chiffre),
+            (self.title_mdt_note_stand_image, self.champs_mdt_note_stand_image),
+            (self.title_mdt_rp_image, self.champs_mdt_rp_image),
+            (self.title_vdt_IVT, self.champs_vdt_IVT),
+            (self.title_vdt_RP, self.champs_vdt_RP),
+            (self.title_vdt_note_stand_code, self.champs_vdt_note_stand_code),
+            (self.title_vdt_rp_code, self.champs_vdt_rp_code),
+            (self.title_vdt_note_stand_symb, self.champs_vdt_note_stand_symb),
+            (self.title_vdt_rp_symb, self.champs_vdt_rp_symb)
         ]
 
         for label, champ in fields:
@@ -129,29 +251,73 @@ class MyWidget(QtWidgets.QWidget):
         main_layout = QtWidgets.QVBoxLayout(self)
         main_layout.addWidget(scroll_area)
 
-        # Style du bouton
+        # Style du bouton futuriste & dynamique
         self.button.setStyleSheet("""
             QPushButton {
-                background-color: #3498db;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                            stop:0 #00c6ff, stop:1 #0072ff);
                 color: white;
-                border-radius: 10px;
-                padding: 8px 16px;
+                border: none;
+                border-radius: 18px;
+                padding: 14px 28px;
+                font-size: 16px;
                 font-weight: bold;
+                letter-spacing: 1px;
+                box-shadow: 0 5px 15px rgba(0, 114, 255, 0.4);
             }
+
             QPushButton:hover {
-                background-color: #2980b9;
+                background: qlineargradient(x1:1, y1:0, x2:0, y2:1,
+                                            stop:0 #00c6ff, stop:1 #0072ff);
+                box-shadow: 0 8px 20px rgba(0, 114, 255, 0.7);
+                transform: scale(1.02);
             }
+
             QPushButton:pressed {
-                background-color: #1c5980;
+                background-color: #0051a3;
+                box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
             }
         """)
 
-        # Style des champs de texte
+        # Style général de l'app
         self.setStyleSheet("""
+            QWidget {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                            stop:0 #1e1e2f, stop:1 #2c2c3e);
+                font-family: 'Segoe UI', sans-serif;
+                font-size: 13px;
+                color: #ecf0f1;
+            }
+
+            QLabel {
+                color: #f0f0f0;
+                font-weight: 600;
+                padding: 6px 0;
+                font-size: 13px;
+                letter-spacing: 0.5px;
+            }
+
             QLineEdit {
-                border-radius: 10px;
-                padding: 8px 16px;
-            }""")
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 12px;
+                padding: 12px 16px;
+                margin-bottom: 14px;
+                color: #ffffff;
+                font-weight: 500;
+                transition: all 0.3s ease-in-out;
+            }
+
+            QLineEdit:hover {
+                background: rgba(255, 255, 255, 0.12);
+            }
+
+            QLineEdit:focus {
+                border: 1px solid #00c6ff;
+                box-shadow: 0 0 6px rgba(0,198,255,0.5);
+                background: rgba(255, 255, 255, 0.16);
+            }
+        """)
 
 
         self.button.clicked.connect(self.generate_bilan)
@@ -177,7 +343,38 @@ class MyWidget(QtWidgets.QWidget):
                             self.champs_rp_cv.text(), self.champs_rp_v.text(), self.champs_rp_rf.text(), self.champs_rp_mdt.text(), self.champs_rp_vt.text(), self.champs_rp_et.text(),
                             self.champs_idc_cv.text(), self.champs_idc_v.text(), self.champs_idc_rf.text(), self.champs_idc_mdt.text(), self.champs_idc_vt.text(), self.champs_idc_et.text(),
                             self.champs_prenom.text())
-        doc.save('TestV2.docx')
+        
+        indices(self.champs_indices_IAG.text(), self.champs_indices_rp1.text(),
+                self.champs_indices_ICC.text(), self.champs_indices_rp2.text(),
+                self.champs_indices_INV.text(), self.champs_indices_rp3.text(),
+                self.champs_prenom.text())
+        
+        capacite_verbal(self.champs_capacite_verbal_ICV.text(), self.champs_capacite_verbal_RP.text(),
+                        self.champs_capacite_verbal_note_stand_simi.text(), self.champs_capacite_verbal_rp_simi.text(),
+                        self.champs_capacite_verbal_note_stand_vocab.text(), self.champs_capacite_verbal_rp_vocab.text(),
+                        self.champs_prenom.text())
+        
+        visuo_spatial(self.champs_visuo_spatial_IVS.text(), self.champs_visuo_spatial_RP.text(),
+                      self.champs_visuo_spatial_note_stand_cubes.text(), self.champs_visuo_spatial_rp_cubes.text(),
+                      self.champs_visuo_spatial_note_stand_puzz.text(), self.champs_visuo_spatial_rp_puzz.text(),
+                      self.champs_prenom.text())
+
+        raisonnement_fluide(self.champs_rf_IRF.text(), self.champs_rf_RP.text(),
+                            self.champs_rf_note_stand_mat.text(), self.champs_rf_rp_mat.text(),
+                            self.champs_rf_note_stand_bal.text(), self.champs_rf_rp_bal.text(),
+                            self.champs_prenom.text())
+
+        memoire_de_travail(self.champs_mdt_IMT.text(), self.champs_mdt_RP.text(),
+                           self.champs_mdt_note_stand_chiffre.text(), self.champs_mdt_rp_chiffre.text(),
+                           self.champs_mdt_note_stand_image.text(), self.champs_mdt_rp_image.text(), 
+                           self.champs_prenom.text())
+        
+        vitesse_de_traitement(self.champs_vdt_IVT.text(), self.champs_vdt_RP.text(),
+                              self.champs_vdt_note_stand_code.text(), self.champs_vdt_rp_code.text(),
+                              self.champs_vdt_note_stand_symb.text(), self.champs_vdt_rp_symb.text(),
+                              self.champs_prenom.text())
+        
+        doc.save('TestV3.docx')
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
