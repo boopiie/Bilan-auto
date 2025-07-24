@@ -90,6 +90,8 @@ class MyWidget(QtWidgets.QWidget):
         self.champs_vdt_note_stand_symb = QtWidgets.QLineEdit()
         self.champs_vdt_rp_symb = QtWidgets.QLineEdit()
 
+        self.champs_nom_fichier = QtWidgets.QLineEdit()
+
 
         # Labels
         self.title_nom = QtWidgets.QLabel("Nom du patient")
@@ -164,6 +166,8 @@ class MyWidget(QtWidgets.QWidget):
         self.title_vdt_note_stand_symb = QtWidgets.QLabel("Symbole - Notes Standards")
         self.title_vdt_rp_symb = QtWidgets.QLabel("Symbole - Rang percentile")
 
+        self.title_nom_fichier = QtWidgets.QLabel("Nom du fichier")
+
         # --- Zone scrollable setup ---
         content_widget = QtWidgets.QWidget()
         content_layout = QtWidgets.QVBoxLayout(content_widget)
@@ -235,7 +239,8 @@ class MyWidget(QtWidgets.QWidget):
             (self.title_vdt_note_stand_code, self.champs_vdt_note_stand_code),
             (self.title_vdt_rp_code, self.champs_vdt_rp_code),
             (self.title_vdt_note_stand_symb, self.champs_vdt_note_stand_symb),
-            (self.title_vdt_rp_symb, self.champs_vdt_rp_symb)
+            (self.title_vdt_rp_symb, self.champs_vdt_rp_symb),
+            (self.title_nom_fichier, self.champs_nom_fichier)
         ]
 
         for label, champ in fields:
@@ -329,6 +334,9 @@ class MyWidget(QtWidgets.QWidget):
     doc = Document()
 
     def generate_bilan(self):
+
+        #Appel de chaque fonctions pour generer le bilan en fonction des informations renseignées
+
         cadrePrésentation(
             self.champs_nom.text(),
             self.champs_prenom.text(),
@@ -374,7 +382,12 @@ class MyWidget(QtWidgets.QWidget):
                               self.champs_vdt_note_stand_symb.text(), self.champs_vdt_rp_symb.text(),
                               self.champs_prenom.text())
         
-        doc.save('TestV3.docx')
+        font_reset()
+
+
+        alignement_reset()
+        
+        doc.save(f'{self.champs_nom_fichier.text()}.docx')
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])

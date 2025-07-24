@@ -261,11 +261,12 @@ def cadrePrésentation(nom, prenom, date_naiss, age, lat, date, doc):
     cadre1 = cell.add_paragraph()
     texteBleu = cadre1.add_run(f"NOM et PRENOM                                                                "
                             f"                    {nom}  {prenom} ")
-    texteBleu.font.color.rgb = RGBColor(0, 100, 255)  # Couleur
+    texteBleu.font.color.rgb = RGBColor(121, 181, 237)  # Couleur
     texteBleu.bold = True
 
-    cadre1 = cell.add_paragraph(f"Date de naissance                                                      "
-    f"                                        {date_naiss}")
+    cadre1 = cell.add_paragraph(f"Date de naissance")
+    cadre1_date_naiss = cell.add_paragraph(f"{date_naiss}")
+    cadre1.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     cadre1 = cell.add_paragraph(f"Age au moment de l'évaluation                                                      "
     f"                 {age} ")
     cadre1 = cell.add_paragraph("Latéralité                                                      "
@@ -279,7 +280,7 @@ def cadrePrésentation(nom, prenom, date_naiss, age, lat, date, doc):
     # Indication
     indication = doc.add_paragraph()
     IndicationBleu = indication.add_run("INDICATION, PLAINTE PRINCIPALE")
-    IndicationBleu.font.color.rgb = RGBColor(0, 100, 255)  # Couleur
+    IndicationBleu.font.color.rgb = RGBColor(121, 181, 237)  # Couleur
     indication = doc.add_paragraph()
     indication.add_run("J’ai rencontré ")
     indication.add_run(f"{nom} {prenom} ").bold = True
@@ -291,7 +292,7 @@ def cadrePrésentation(nom, prenom, date_naiss, age, lat, date, doc):
     # Source information
     source_info = doc.add_paragraph()
     SourceBleu = source_info.add_run("SOURCE D'INFORMATION")
-    SourceBleu.font.color.rgb = RGBColor(0, 100, 255)  # Couleur
+    SourceBleu.font.color.rgb = RGBColor(121, 181, 237)  # Couleur
     source_info = doc.add_paragraph()   
     run(f"Les informations pertinentes ont été recueillies auprès des parents et de {prenom}. ", source_info)
     source_info = doc.add_paragraph()
@@ -320,7 +321,7 @@ def notes_compo_principales(ENS_CV, ENS_V, ENS_RF, ENS_MDT, ENS_VT, ENS_ET,
     # Texte bleu
     texteBleu2 = CapCo.add_run("Capacités cognitives globales ")
     texteBleu2.bold = True
-    texteBleu2.font.color.rgb = RGBColor(0, 100, 255)  # Couleur
+    texteBleu2.font.color.rgb = RGBColor(121, 181, 237)  # Couleur
     texteBleu2.underline = True
     CapCo = doc.add_paragraph()
     texteWISC = CapCo.add_run("Le WISC-V est utilisé pour mesurer les habiletés générales de raisonnement des " \
@@ -382,7 +383,20 @@ def notes_compo_principales(ENS_CV, ENS_V, ENS_RF, ENS_MDT, ENS_VT, ENS_ET,
             cell = table.cell(row_idx, j)
             p = cell.paragraphs[0]
             run = p.add_run(val)
-
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            if j > 1 and j < 6:
+                if get_category(val) == "zone faible":
+                    run.font.color.rgb = RGBColor(255, 41, 41)
+                if get_category(val) == "moyenne faible":
+                    run.font.color.rgb = RGBColor(255, 105, 41)
+                if get_category(val) == "moyenne":
+                    run.font.color.rgb = RGBColor(0, 0, 0)
+                if get_category(val) == "moyenne forte":
+                    run.font.color.rgb = RGBColor(134, 255, 107)
+                if get_category(val) == "zone élevée":
+                    run.font.color.rgb = RGBColor(59, 115, 47)
+                if get_category(val) == "zone très élevée":
+                    run.font.color.rgb = RGBColor(76, 177, 217)
             # Styling
             if row_idx == 6:
                 # Last row background color
@@ -443,7 +457,7 @@ def capacite_verbal(ICV, RP, note_stand_simi, rang_per_simi, note_stand_vocab, r
     # Capacités verbales
     texteBleu3 = CapVe.add_run("Capacités verbales")
     texteBleu3.bold = True
-    texteBleu3.font.color.rgb = RGBColor(0, 100, 255)  # Couleur
+    texteBleu3.font.color.rgb = RGBColor(121, 181, 237)  # Couleur
     texteBleu3.underline = True
 
     ajouter_paragraphe_italique(
@@ -494,12 +508,26 @@ def capacite_verbal(ICV, RP, note_stand_simi, rang_per_simi, note_stand_vocab, r
         cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
         set_cell_border(cell, top=bordure, bottom=bordure, start=bordure, end=bordure)
 
+
     # Ligne 1 : Matrices
     for i, val in enumerate(matrices):
         cell = table.cell(1, i)
         para = cell.paragraphs[0]
         run = para.add_run(str(val))
         run.font.size = Pt(12)
+        if i > 0:
+            if get_category(val) == "zone faible":
+                run.font.color.rgb = RGBColor(255, 41, 41)
+            if get_category(val) == "moyenne faible":
+                run.font.color.rgb = RGBColor(255, 105, 41)
+            if get_category(val) == "moyenne":
+                run.font.color.rgb = RGBColor(0, 0, 0)
+            if get_category(val) == "moyenne forte":
+                run.font.color.rgb = RGBColor(134, 255, 107)
+            if get_category(val) == "zone élevée":
+                run.font.color.rgb = RGBColor(59, 115, 47)
+            if get_category(val) == "zone très élevée":
+                run.font.color.rgb = RGBColor(76, 177, 217)
         para.alignment = WD_ALIGN_PARAGRAPH.CENTER
         cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
         set_cell_border(cell, top=bordure, bottom=bordure, start=bordure, end=bordure)
@@ -510,21 +538,89 @@ def capacite_verbal(ICV, RP, note_stand_simi, rang_per_simi, note_stand_vocab, r
         para = cell.paragraphs[0]
         run = para.add_run(str(val))
         run.font.size = Pt(12)
-        run.font.color.rgb = RGBColor(0, 128, 0)  # vert
+        if i > 0:
+            if get_category(val) == "zone faible":
+                run.font.color.rgb = RGBColor(255, 41, 41)
+            if get_category(val) == "moyenne faible":
+                run.font.color.rgb = RGBColor(255, 105, 41)
+            if get_category(val) == "moyenne":
+                run.font.color.rgb = RGBColor(0, 0, 0)
+            if get_category(val) == "moyenne forte":
+                run.font.color.rgb = RGBColor(134, 255, 107)
+            if get_category(val) == "zone élevée":
+                run.font.color.rgb = RGBColor(59, 115, 47)
+            if get_category(val) == "zone très élevée":
+                run.font.color.rgb = RGBColor(76, 177, 217)
         para.alignment = WD_ALIGN_PARAGRAPH.CENTER
         cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
         set_cell_border(cell, top=bordure, bottom=bordure, start=bordure, end=bordure)
 
     # Partie similitude
-    ajouter_paragraphe(
-    doc,
-    "",
-    "Le subtest « ",
-    "Similitudes ",
-    f"» permet d'appréhender la qualité du langage oral de {prenom}, ses capacités d'abstractionet de raisonnement verbal. {prenom} présente des performances dans la ",
-    get_category(rang_per_simi),
-    "de son âge. Il montre de bonnes capacités catégorisation et de conceptualisation."
-    )
+    if get_category(rang_per_simi) == "zone faible":
+        ajouter_paragraphe(
+        doc,
+        "",
+        "Le subtest « ",
+        "Similitudes ",
+        f"» permet d'appréhender la qualité du langage oral de {prenom}, ses capacités d'abstractionet de raisonnement verbal. {prenom} présente des performances dans la ",
+        get_category(rang_per_simi),
+        " de son âge. Il montre des difficultés de catégorisation et de conceptualisation." 
+        )
+    
+    if get_category(rang_per_simi) == "moyenne faible":
+        ajouter_paragraphe(
+        doc,
+        "",
+        "Le subtest « ",
+        "Similitudes ",
+        f"» permet d'appréhender la qualité du langage oral de {prenom}, ses capacités d'abstractionet de raisonnement verbal. {prenom} présente des performances dans la ",
+        get_category(rang_per_simi),
+        " de son âge. Il montre des fragilités dans la catégorisation et la conceptualisation." 
+        )
+
+    if get_category(rang_per_simi) == "moyenne":
+        ajouter_paragraphe(
+        doc,
+        "",
+        "Le subtest « ",
+        "Similitudes ",
+        f"» permet d'appréhender la qualité du langage oral de {prenom}, ses capacités d'abstractionet de raisonnement verbal. {prenom} présente des performances dans la ",
+        get_category(rang_per_simi),
+        " de son âge. Il montre de bonnes capacités de catégorisation et de conceptualisation." 
+        )
+
+    if get_category(rang_per_simi) == "moyenne forte":
+        ajouter_paragraphe(
+        doc,
+        "",
+        "Le subtest « ",
+        "Similitudes ",
+        f"» permet d'appréhender la qualité du langage oral de {prenom}, ses capacités d'abstractionet de raisonnement verbal. {prenom} présente des performances dans la ",
+        get_category(rang_per_simi),
+        " de son âge. Il montre de bonnes capacités de catégorisation et de conceptualisation." 
+        )
+
+    if get_category(rang_per_simi) == "zone elevée":
+        ajouter_paragraphe(
+        doc,
+        "",
+        "Le subtest « ",
+        "Similitudes ",
+        f"» permet d'appréhender la qualité du langage oral de {prenom}, ses capacités d'abstractionet de raisonnement verbal. {prenom} présente des performances dans la ",
+        get_category(rang_per_simi),
+        " de son âge. Il montre de très bonnes capacités de catégorisation et de conceptualisation." 
+        )
+
+    if get_category(rang_per_simi) == "zone très elevée":
+        ajouter_paragraphe(
+        doc,
+        "",
+        "Le subtest « ",
+        "Similitudes ",
+        f"» permet d'appréhender la qualité du langage oral de {prenom}, ses capacités d'abstractionet de raisonnement verbal. {prenom} présente des performances dans la ",
+        get_category(rang_per_simi),
+        " de son âge. Il montre d’excellentes capacités de catégorisation et de conceptualisation." 
+        )
 
     ajouter_paragraphe_italique(
         doc,
@@ -533,15 +629,73 @@ def capacite_verbal(ICV, RP, note_stand_simi, rang_per_simi, note_stand_vocab, r
     )
 
     # Partie vocabulaire
-    ajouter_paragraphe(
-    doc,
-    "",
-    "Lors de l'épreuve de «",
-    "Vocabulaire",
-    f"», qui fait appel à ses connaissance internalisées (faisant appel à son expérience et des situations de la vie quotidienne), {prenom} obtient des résultats dans la ",
-    get_category(rang_per_vocab),
-    f"de son âge. {prenom} témoigne d'un bon stock lexical."
-    )
+
+    if get_category(rang_per_vocab) == "zone faible":
+        ajouter_paragraphe(
+        doc,
+        "",
+        "Lors de l'épreuve de «",
+        "Vocabulaire",
+        f"», qui fait appel à ses connaissance internalisées (faisant appel à son expérience et des situations de la vie quotidienne), {prenom} obtient des résultats dans la ",
+        get_category(rang_per_vocab),
+        f" de son âge. {prenom} témoigne d’un stock lexical pauvre."
+        )
+    
+    if get_category(rang_per_vocab) == "moyenne faible":
+        ajouter_paragraphe(
+        doc,
+        "",
+        "Lors de l'épreuve de «",
+        "Vocabulaire",
+        f"», qui fait appel à ses connaissance internalisées (faisant appel à son expérience et des situations de la vie quotidienne), {prenom} obtient des résultats dans la ",
+        get_category(rang_per_vocab),
+        f" de son âge. {prenom} témoigne d’un stock lexical fragile."
+        )
+
+    if get_category(rang_per_vocab) == "moyenne":
+        ajouter_paragraphe(
+        doc,
+        "",
+        "Lors de l'épreuve de «",
+        "Vocabulaire",
+        f"», qui fait appel à ses connaissance internalisées (faisant appel à son expérience et des situations de la vie quotidienne), {prenom} obtient des résultats dans la ",
+        get_category(rang_per_vocab),
+        f" de son âge. {prenom} témoigne d’un bon stock lexical."
+        )
+    
+    if get_category(rang_per_vocab) == "moyenne forte":
+        ajouter_paragraphe(
+        doc,
+        "",
+        "Lors de l'épreuve de «",
+        "Vocabulaire",
+        f"», qui fait appel à ses connaissance internalisées (faisant appel à son expérience et des situations de la vie quotidienne), {prenom} obtient des résultats dans la ",
+        get_category(rang_per_vocab),
+        f" de son âge. {prenom} témoigne d’un bon stock lexical."
+        )
+
+    if get_category(rang_per_vocab) == "zone élevée":
+        ajouter_paragraphe(
+        doc,
+        "",
+        "Lors de l'épreuve de «",
+        "Vocabulaire",
+        f"», qui fait appel à ses connaissance internalisées (faisant appel à son expérience et des situations de la vie quotidienne), {prenom} obtient des résultats dans la ",
+        get_category(rang_per_vocab),
+        f" de son âge. {prenom} témoigne d’un très bon stock lexical."
+        )
+
+    if get_category(rang_per_vocab) == "zone très élevée":
+        ajouter_paragraphe(
+        doc,
+        "",
+        "Lors de l'épreuve de «",
+        "Vocabulaire",
+        f"», qui fait appel à ses connaissance internalisées (faisant appel à son expérience et des situations de la vie quotidienne), {prenom} obtient des résultats dans la ",
+        get_category(rang_per_vocab),
+        f" de son âge. {prenom} témoigne d’un excellent stock lexical."
+        )
+
     ajouter_paragraphe_italique(
         doc,
         "Exemple : « Qu'est-ce qu'une fourchette ? »",
@@ -559,12 +713,12 @@ def visuo_spatial(IVS, RP, note_stand_cube, rang_per_cube, note_stand_puzz, rang
     FVS = doc.add_paragraph()
     texteBleu4 = FVS.add_run("Fonctions visuo-spatiales")
     texteBleu4.bold = True
-    texteBleu4.font.color.rgb = RGBColor(0, 100, 255)  # Couleur
+    texteBleu4.font.color.rgb = RGBColor(121, 181, 237)  # Couleur
     texteBleu4.underline = True
 
     ajouter_paragraphe_italique(
         doc,
-        "L'indice Visuo-Spatial (IVS) ",
+        "L'indice Visuo-Spatial (IVS)",
         ", mesure la capacité à analyser les détails visuels et comprendre les relations  visuo-spatiales afin de construire des dessins géométriques à partir d'un modèle. Cette habileté requiert un  raisonnement visuo-spatial, l’intégration et la synthèse de relations « partie-tout », l'attention aux détails  visuels et l'intégration visuo-motrice. "
     )
     doc.add_paragraph()
@@ -608,6 +762,19 @@ def visuo_spatial(IVS, RP, note_stand_cube, rang_per_cube, note_stand_puzz, rang
         para = cell.paragraphs[0]
         run = para.add_run(str(val))
         run.font.size = Pt(12)
+        if i > 0:
+            if get_category(val) == "zone faible":
+                run.font.color.rgb = RGBColor(255, 41, 41)
+            if get_category(val) == "moyenne faible":
+                run.font.color.rgb = RGBColor(255, 105, 41)
+            if get_category(val) == "moyenne":
+                run.font.color.rgb = RGBColor(0, 0, 0)
+            if get_category(val) == "moyenne forte":
+                run.font.color.rgb = RGBColor(134, 255, 107)
+            if get_category(val) == "zone élevée":
+                run.font.color.rgb = RGBColor(59, 115, 47)
+            if get_category(val) == "zone très élevée":
+                run.font.color.rgb = RGBColor(76, 177, 217)
         para.alignment = WD_ALIGN_PARAGRAPH.CENTER
         cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
         set_cell_border(cell, top=bordure, bottom=bordure, start=bordure, end=bordure)
@@ -618,7 +785,19 @@ def visuo_spatial(IVS, RP, note_stand_cube, rang_per_cube, note_stand_puzz, rang
         para = cell.paragraphs[0]
         run = para.add_run(str(val))
         run.font.size = Pt(12)
-        run.font.color.rgb = RGBColor(0, 128, 0)  # vert
+        if i > 0:
+            if get_category(val) == "zone faible":
+                run.font.color.rgb = RGBColor(255, 41, 41)
+            if get_category(val) == "moyenne faible":
+                run.font.color.rgb = RGBColor(255, 105, 41)
+            if get_category(val) == "moyenne":
+                run.font.color.rgb = RGBColor(0, 0, 0)
+            if get_category(val) == "moyenne forte":
+                run.font.color.rgb = RGBColor(134, 255, 107)
+            if get_category(val) == "zone élevée":
+                run.font.color.rgb = RGBColor(59, 115, 47)
+            if get_category(val) == "zone très élevée":
+                run.font.color.rgb = RGBColor(76, 177, 217)
         para.alignment = WD_ALIGN_PARAGRAPH.CENTER
         cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
         set_cell_border(cell, top=bordure, bottom=bordure, start=bordure, end=bordure)
@@ -654,15 +833,71 @@ def visuo_spatial(IVS, RP, note_stand_cube, rang_per_cube, note_stand_puzz, rang
         run5 = para.add_run(f" de son âge. {prenom} montre d’excellentes capacités dans l’organisation spatiale des modèles et dans la visuo-construction.")
 
     # Paragraphe descriptif "Puzzles visuels"
-    ajouter_paragraphe(
-        doc,
-        "",
-        "Lors du subtest ",
-        "« Puzzles visuels »",
-        f", où il lui est demandé de choisir trois pièces de puzzle qui, ensemble, reconstruiraient le modèle visuel, {prenom} présente des performances , dans la ",
-        get_category(rang_per_puzz),
-        f" de son âge. {prenom} montre de bonnes capacités visuo-spatiale. Toutefois, nous observons des difficultés pour soutenir l’effort dans cette épreuve ainsi qu’une certaine précipitation dans ses réponses."
-    )
+    if get_category(rang_per_puzz) == "zone faible":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest ",
+            "« Puzzles visuels »",
+            f", où il lui est demandé de choisir trois pièces de puzzle qui, ensemble, reconstruiraient le modèle visuel, {prenom} présente des performances , dans la ",
+            get_category(rang_per_puzz),
+            f" de son âge. {prenom} présente des difficultés d’analyse visuo-spatiale."
+        )
+
+    if get_category(rang_per_puzz) == "moyenne faible":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest ",
+            "« Puzzles visuels »",
+            f", où il lui est demandé de choisir trois pièces de puzzle qui, ensemble, reconstruiraient le modèle visuel, {prenom} présente des performances , dans la ",
+            get_category(rang_per_puzz),
+            f" de son âge. {prenom} présente des fragilités dans l’analyse visuo-spatiale."
+        )
+    
+    if get_category(rang_per_puzz) == "moyenne":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest ",
+            "« Puzzles visuels »",
+            f", où il lui est demandé de choisir trois pièces de puzzle qui, ensemble, reconstruiraient le modèle visuel, {prenom} présente des performances , dans la ",
+            get_category(rang_per_puzz),
+            f" de son âge. {prenom} présente de bonnes compétences dans l’analyse visuo-spatiale."
+        )
+    
+    if get_category(rang_per_puzz) == "moyenne forte":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest ",
+            "« Puzzles visuels »",
+            f", où il lui est demandé de choisir trois pièces de puzzle qui, ensemble, reconstruiraient le modèle visuel, {prenom} présente des performances , dans la ",
+            get_category(rang_per_puzz),
+            f" de son âge. {prenom} présente de bonnes compétences dans l’analyse visuo-spatiale."
+        )
+
+    if get_category(rang_per_puzz) == "zone élevée":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest ",
+            "« Puzzles visuels »",
+            f", où il lui est demandé de choisir trois pièces de puzzle qui, ensemble, reconstruiraient le modèle visuel, {prenom} présente des performances , dans la ",
+            get_category(rang_per_puzz),
+            f" de son âge. {prenom} présente de très bonnes compétences dans l’analyse visuo-spatiale."
+        )
+    
+    if get_category(rang_per_puzz) == "zone très élevée":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest ",
+            "« Puzzles visuels »",
+            f", où il lui est demandé de choisir trois pièces de puzzle qui, ensemble, reconstruiraient le modèle visuel, {prenom} présente des performances , dans la ",
+            get_category(rang_per_puzz),
+            f" de son âge. {prenom} présente d'excellentes compétences dans l’analyse visuo-spatiale."
+        )
 
     # Insérer l’image à droite (adaptée à ton style)
     para_img = doc.add_paragraph()
@@ -680,7 +915,7 @@ def raisonnement_fluide(IRF, RP, note_stand_mat, rang_per_mat, note_stand_bal, r
     RF = doc.add_paragraph()
     texteBleu5 = RF.add_run("Raisonnement fluide")
     texteBleu5.bold = True
-    texteBleu5.font.color.rgb = RGBColor(0, 100, 255)  # Couleur
+    texteBleu5.font.color.rgb = RGBColor(121, 181, 237)  # Couleur
     texteBleu5.underline = True
 
     # Paragraphe explicatif en italique
@@ -698,8 +933,10 @@ def raisonnement_fluide(IRF, RP, note_stand_mat, rang_per_mat, note_stand_bal, r
         f" (IRF = {IRF}, RP = {RP})",
         " telles que mesurées par le WISC-V, apparaissent ce jour, dans la ",
         get_category(RP),
-        "pour son âge."
+        " pour son âge."
     )
+
+    doc.add_paragraph()
 
     # Création du tableau
     table = doc.add_table(rows=3, cols=3)
@@ -730,6 +967,19 @@ def raisonnement_fluide(IRF, RP, note_stand_mat, rang_per_mat, note_stand_bal, r
         para = cell.paragraphs[0]
         run = para.add_run(str(val))
         run.font.size = Pt(12)
+        if i > 0:
+            if get_category(val) == "zone faible":
+                run.font.color.rgb = RGBColor(255, 41, 41)
+            if get_category(val) == "moyenne faible":
+                run.font.color.rgb = RGBColor(255, 105, 41)
+            if get_category(val) == "moyenne":
+                run.font.color.rgb = RGBColor(0, 0, 0)
+            if get_category(val) == "moyenne forte":
+                run.font.color.rgb = RGBColor(134, 255, 107)
+            if get_category(val) == "zone élevée":
+                run.font.color.rgb = RGBColor(59, 115, 47)
+            if get_category(val) == "zone très élevée":
+                run.font.color.rgb = RGBColor(76, 177, 217)
         para.alignment = WD_ALIGN_PARAGRAPH.CENTER
         cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
         set_cell_border(cell, top=bordure, bottom=bordure, start=bordure, end=bordure)
@@ -740,37 +990,162 @@ def raisonnement_fluide(IRF, RP, note_stand_mat, rang_per_mat, note_stand_bal, r
         para = cell.paragraphs[0]
         run = para.add_run(str(val))
         run.font.size = Pt(12)
-        run.font.color.rgb = RGBColor(0, 128, 0)  # vert
+        if i > 0:
+            if get_category(val) == "zone faible":
+                run.font.color.rgb = RGBColor(255, 41, 41)
+            if get_category(val) == "moyenne faible":
+                run.font.color.rgb = RGBColor(255, 105, 41)
+            if get_category(val) == "moyenne":
+                run.font.color.rgb = RGBColor(0, 0, 0)
+            if get_category(val) == "moyenne forte":
+                run.font.color.rgb = RGBColor(134, 255, 107)
+            if get_category(val) == "zone élevée":
+                run.font.color.rgb = RGBColor(59, 115, 47)
+            if get_category(val) == "zone très élevée":
+                run.font.color.rgb = RGBColor(76, 177, 217)
         para.alignment = WD_ALIGN_PARAGRAPH.CENTER
         cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
         set_cell_border(cell, top=bordure, bottom=bordure, start=bordure, end=bordure)
 
     doc.add_paragraph()
 
-    ajouter_paragraphe(
-        doc,
-        "",
-        "Le subtest « ",
-        "Matrices ",
-        "» sollicite les compétences visuo-spatiales, le raisonnement visuel, les capacités  d’induction (inférer une logique à partir de l’observation), les capacités de  déduction (généralisation d’une logique et application sur de nouveaux  éléments) ainsi qu’une démarche catégorielle (abstraction de traits  communs et de différences par comparaisons). Ces derniers se situent dans  la ",
-        get_category(rang_per_mat),
-        f" de son âge. {prenom} montre de bonnes capacités en logique d’ordre  visuo-spatiale. Toutefois, il présente une grande impulsivité dans cette  épreuve, ne prenant pas toujours le temps de réflexion nécessaire avant de répondre aux items. "
-    )
+    
+    if get_category(rang_per_mat) == "zone faible":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Le subtest « ",
+            "Matrices ",
+            "» sollicite les compétences visuo-spatiales, le raisonnement visuel, les capacités  d’induction (inférer une logique à partir de l’observation), les capacités de  déduction (généralisation d’une logique et application sur de nouveaux  éléments) ainsi qu’une démarche catégorielle (abstraction de traits  communs et de différences par comparaisons). Ces derniers se situent dans  la ",
+            get_category(rang_per_mat),
+            f" de son âge. {prenom} montre des difficultés en logique d’ordre visuo-spatiale. "
+        )
+
+    if get_category(rang_per_mat) == "moyenne faible":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Le subtest « ",
+            "Matrices ",
+            "» sollicite les compétences visuo-spatiales, le raisonnement visuel, les capacités  d’induction (inférer une logique à partir de l’observation), les capacités de  déduction (généralisation d’une logique et application sur de nouveaux  éléments) ainsi qu’une démarche catégorielle (abstraction de traits  communs et de différences par comparaisons). Ces derniers se situent dans  la ",
+            get_category(rang_per_mat),
+            f" de son âge. {prenom} montre des fragilités dans la logique d’ordre visuo-spatiale. "
+        )
+    
+    if get_category(rang_per_mat) == "moyenne":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Le subtest « ",
+            "Matrices ",
+            "» sollicite les compétences visuo-spatiales, le raisonnement visuel, les capacités  d’induction (inférer une logique à partir de l’observation), les capacités de  déduction (généralisation d’une logique et application sur de nouveaux  éléments) ainsi qu’une démarche catégorielle (abstraction de traits  communs et de différences par comparaisons). Ces derniers se situent dans  la ",
+            get_category(rang_per_mat),
+            f" de son âge. {prenom} montre de bonnes aptitudes en logique d’ordre visuo-spatiale. "
+        )
+
+    if get_category(rang_per_mat) == "moyenne forte":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Le subtest « ",
+            "Matrices ",
+            "» sollicite les compétences visuo-spatiales, le raisonnement visuel, les capacités  d’induction (inférer une logique à partir de l’observation), les capacités de  déduction (généralisation d’une logique et application sur de nouveaux  éléments) ainsi qu’une démarche catégorielle (abstraction de traits  communs et de différences par comparaisons). Ces derniers se situent dans  la ",
+            get_category(rang_per_mat),
+            f" de son âge. {prenom} montre de bonnes aptitudes en logique d’ordre visuo-spatiale. "
+        )
+
+    if get_category(rang_per_mat) == "zone élevée":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Le subtest « ",
+            "Matrices ",
+            "» sollicite les compétences visuo-spatiales, le raisonnement visuel, les capacités  d’induction (inférer une logique à partir de l’observation), les capacités de  déduction (généralisation d’une logique et application sur de nouveaux  éléments) ainsi qu’une démarche catégorielle (abstraction de traits  communs et de différences par comparaisons). Ces derniers se situent dans  la ",
+            get_category(rang_per_mat),
+            f" de son âge. {prenom} montre de très bonnes aptitudes en logique d’ordre visuo-spatiale. "
+        )
+
+    if get_category(rang_per_mat) == "zone très élevée":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Le subtest « ",
+            "Matrices ",
+            "» sollicite les compétences visuo-spatiales, le raisonnement visuel, les capacités  d’induction (inférer une logique à partir de l’observation), les capacités de  déduction (généralisation d’une logique et application sur de nouveaux  éléments) ainsi qu’une démarche catégorielle (abstraction de traits  communs et de différences par comparaisons). Ces derniers se situent dans  la ",
+            get_category(rang_per_mat),
+            f" de son âge. {prenom} montre d’excellentes aptitudes en logique d’ordre visuo-spatiale. "
+        )
+
 
     para_img = doc.add_paragraph()
     run_img = para_img.add_run()
     run_img.add_picture("images/image_rien.jpg", width=Inches(1.5))  # Ajuste la taille si besoin
     para_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-    ajouter_paragraphe(
-        doc,
-        "",
-        "Pour le subtest « ",
-        "Balances",
-        f" », il s’agit d’une tâche de logique  inductive et déductive pour laquelle le concept quantitatif d’égalité  doit être acquis afin de permettre l’application des concepts de  correspondance, d’addition et/ou de multiplication. Dans cette  épreuve, {prenom} se situe dans la ",
-        get_category(rang_per_bal),
-        " de son âge. Il montre un bon raisonnement logico-mathématique."
-    )
+    if get_category(rang_per_bal) == "zone faible":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Pour le subtest « ",
+            "Balances",
+            f" », il s’agit d’une tâche de logique  inductive et déductive pour laquelle le concept quantitatif d’égalité  doit être acquis afin de permettre l’application des concepts de  correspondance, d’addition et/ou de multiplication. Dans cette  épreuve, {prenom} se situe dans la ",
+            get_category(rang_per_bal),
+            f" de son âge. {prenom} présente des difficultés dans le raisonnement logico-mathématique.")
+    
+    if get_category(rang_per_bal) == "moyenne faible":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Pour le subtest « ",
+            "Balances",
+            f" », il s’agit d’une tâche de logique  inductive et déductive pour laquelle le concept quantitatif d’égalité  doit être acquis afin de permettre l’application des concepts de  correspondance, d’addition et/ou de multiplication. Dans cette  épreuve, {prenom} se situe dans la ",
+            get_category(rang_per_bal),
+            f" de son âge. {prenom} présente des fragilités dans le raisonnement logico-mathématique."
+        )
+
+    if get_category(rang_per_bal) == "moyenne":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Pour le subtest « ",
+            "Balances",
+            f" », il s’agit d’une tâche de logique  inductive et déductive pour laquelle le concept quantitatif d’égalité  doit être acquis afin de permettre l’application des concepts de  correspondance, d’addition et/ou de multiplication. Dans cette  épreuve, {prenom} se situe dans la ",
+            get_category(rang_per_bal),
+            f" de son âge. {prenom} montre un bon raisonnement logico-mathématique." #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        )
+
+    if get_category(rang_per_bal) == "moyenne forte":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Pour le subtest « ",
+            "Balances",
+            f" », il s’agit d’une tâche de logique  inductive et déductive pour laquelle le concept quantitatif d’égalité  doit être acquis afin de permettre l’application des concepts de  correspondance, d’addition et/ou de multiplication. Dans cette  épreuve, {prenom} se situe dans la ",
+            get_category(rang_per_bal),
+            f" de son âge. {prenom} montre un bon raisonnement logico-mathématique." #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        )
+
+    if get_category(rang_per_bal) == "zone élevée":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Pour le subtest « ",
+            "Balances",
+            f" », il s’agit d’une tâche de logique  inductive et déductive pour laquelle le concept quantitatif d’égalité  doit être acquis afin de permettre l’application des concepts de  correspondance, d’addition et/ou de multiplication. Dans cette  épreuve, {prenom} se situe dans la ",
+            get_category(rang_per_bal),
+            f" de son âge. {prenom} montre un très bon raisonnement logico-mathématique." #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        )
+
+    if get_category(rang_per_bal) == "zone très élevée":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Pour le subtest « ",
+            "Balances",
+            f" », il s’agit d’une tâche de logique  inductive et déductive pour laquelle le concept quantitatif d’égalité  doit être acquis afin de permettre l’application des concepts de  correspondance, d’addition et/ou de multiplication. Dans cette  épreuve, {prenom} se situe dans la ",
+            get_category(rang_per_bal),
+            f" de son âge. {prenom} montre un très bon raisonnement logico-mathématique." #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        )
 
     # IMAGE
     para_img = doc.add_paragraph()
@@ -790,7 +1165,7 @@ def memoire_de_travail(IMT, RP, note_stand_chiffre, rang_per_chiffre, note_stand
     MDT = doc.add_paragraph()
     texteBleu6 = MDT.add_run("Mémoire de travail")
     texteBleu6.bold = True
-    texteBleu6.font.color.rgb = RGBColor(0, 100, 255)  # Couleur
+    texteBleu6.font.color.rgb = RGBColor(121, 181, 237)  # Couleur
     texteBleu6.underline = True
 
     ajouter_paragraphe_italique(
@@ -808,7 +1183,7 @@ def memoire_de_travail(IMT, RP, note_stand_chiffre, rang_per_chiffre, note_stand
         f"IMT = {IMT}, RP = {RP}",
         ") témoigne d’une mémoire de travail dans la ",
         get_category(RP),
-        "de son âge"
+        " de son âge"
     )
 
     doc.add_paragraph()
@@ -843,7 +1218,19 @@ def memoire_de_travail(IMT, RP, note_stand_chiffre, rang_per_chiffre, note_stand
         para = cell.paragraphs[0]
         run = para.add_run(str(val))
         run.font.size = Pt(12)
-        run.font.color.rgb = RGBColor(237, 125, 49)  # orange
+        if i > 0:
+            if get_category(val) == "zone faible":
+                run.font.color.rgb = RGBColor(255, 41, 41)
+            if get_category(val) == "moyenne faible":
+                run.font.color.rgb = RGBColor(255, 105, 41)
+            if get_category(val) == "moyenne":
+                run.font.color.rgb = RGBColor(0, 0, 0)
+            if get_category(val) == "moyenne forte":
+                run.font.color.rgb = RGBColor(134, 255, 107)
+            if get_category(val) == "zone élevée":
+                run.font.color.rgb = RGBColor(59, 115, 47)
+            if get_category(val) == "zone très élevée":
+                run.font.color.rgb = RGBColor(76, 177, 217)
         para.alignment = WD_ALIGN_PARAGRAPH.CENTER
         cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
         set_cell_border(cell, top=bordure, bottom=bordure, start=bordure, end=bordure)
@@ -854,7 +1241,19 @@ def memoire_de_travail(IMT, RP, note_stand_chiffre, rang_per_chiffre, note_stand
         para = cell.paragraphs[0]
         run = para.add_run(str(val))
         run.font.size = Pt(12)
-        run.font.color.rgb = RGBColor(237, 125, 49)  # orange
+        if i > 0:
+            if get_category(val) == "zone faible":
+                run.font.color.rgb = RGBColor(255, 41, 41)
+            if get_category(val) == "moyenne faible":
+                run.font.color.rgb = RGBColor(255, 105, 41)
+            if get_category(val) == "moyenne":
+                run.font.color.rgb = RGBColor(0, 0, 0)
+            if get_category(val) == "moyenne forte":
+                run.font.color.rgb = RGBColor(134, 255, 107)
+            if get_category(val) == "zone élevée":
+                run.font.color.rgb = RGBColor(59, 115, 47)
+            if get_category(val) == "zone très élevée":
+                run.font.color.rgb = RGBColor(76, 177, 217)
         para.alignment = WD_ALIGN_PARAGRAPH.CENTER
         cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
         set_cell_border(cell, top=bordure, bottom=bordure, start=bordure, end=bordure)
@@ -869,25 +1268,137 @@ def memoire_de_travail(IMT, RP, note_stand_chiffre, rang_per_chiffre, note_stand
 
     doc.add_paragraph()
 
-    ajouter_paragraphe(
-        doc,
-        "",
-        "Lors du subtest « ",
-        "Mémoire des chiffres ",
-        f"», {prenom} présente des performances dans la ",
-        get_category(note_stand_chiffre),
-        f" de son âge.  {prenom} présente de légères difficulté en mémoire à court terme sur un support auditif. Il semblerait que les tâches  sérielles et de même nature soient coûteuses pour lui. De plus, il présente de nombreux décrochages  attentionnels avec une attention qui fluctue pendant l’épreuve. {prenom} est debout, il fait du bruit et montre des  difficultés dans la compréhension des consignes."
-    )
+    if get_category(rang_per_chiffre) == "zone faible":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Mémoire des chiffres ",
+            f"», {prenom} présente des performances dans la ",
+            get_category(rang_per_chiffre),
+            f" de son âge. {prenom} présente des difficultés en mémoire à court terme sur un support auditif."
+        )
 
-    ajouter_paragraphe(
-        doc,
-        "",
-        "Lors du subtest « ",
-        "Mémoire des images ",
-        f"», {prenom} se situe dans la ",
-        get_category(note_stand_image),
-        f" de son âge. {prenom} présente des difficultés en mémoire à court terme sur un support visuel. Lors de cette épreuve, il arrive vite à saturation et  ne semble plus disposer des ressources attentionnelles nécessaire pour continuer l’épreuve."
-    )
+    if get_category(rang_per_chiffre) == "moyenne faible":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Mémoire des chiffres ",
+            f"», {prenom} présente des performances dans la ",
+            get_category(rang_per_chiffre),
+            f" de son âge. {prenom} présente de légères difficulté en mémoire à court terme sur un support auditif."
+        )
+
+    if get_category(rang_per_chiffre) == "moyenne":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Mémoire des chiffres ",
+            f"», {prenom} présente des performances dans la ",
+            get_category(rang_per_chiffre),
+            f" de son âge. {prenom} présente de bonnes compétences en mémoire à court terme sur un support auditif."
+        )
+
+    if get_category(rang_per_chiffre) == "moyenne forte":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Mémoire des chiffres ",
+            f"», {prenom} présente des performances dans la ",
+            get_category(rang_per_chiffre),
+            f" de son âge. {prenom} présente de bonnes compétences en mémoire à court terme sur un support auditif."
+        )
+
+    if get_category(rang_per_chiffre) == "zone élevée":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Mémoire des chiffres ",
+            f"», {prenom} présente des performances dans la ",
+            get_category(rang_per_chiffre),
+            f" de son âge. {prenom} présente de très bonnes compétences en mémoire à court terme sur un support auditif."
+        )
+
+    if get_category(rang_per_chiffre) == "zone très élevée":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Mémoire des chiffres ",
+            f"», {prenom} présente des performances dans la ",
+            get_category(rang_per_chiffre),
+            f" de son âge.  {prenom} présente de très bonnes compétences en mémoire à court terme sur un support auditif."
+        )
+
+    if get_category(rang_per_image) == "zone faible":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Mémoire des images ",
+            f"», {prenom} se situe dans la ",
+            get_category(rang_per_image),
+            f" de son âge. {prenom} présente des difficultés en mémoire à court terme sur un support visuel. Lors de cette épreuve, il arrive vite à saturation et  ne semble plus disposer des ressources attentionnelles nécessaire pour continuer l’épreuve."
+        )
+
+    if get_category(rang_per_image) == "moyenne faible":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Mémoire des images ",
+            f"», {prenom} se situe dans la ",
+            get_category(rang_per_image),
+            f" de son âge. {prenom} présente des fragilités en mémoire à court terme sur un support visuel."
+        )
+
+    if get_category(rang_per_image) == "moyenne":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Mémoire des images ",
+            f"», {prenom} se situe dans la ",
+            get_category(rang_per_image),
+            f" de son âge. {prenom} présente de bonnes capacités en mémoire à court terme sur un support visuel."
+        )
+
+    if get_category(rang_per_image) == "moyenne forte":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Mémoire des images ",
+            f"», {prenom} se situe dans la ",
+            get_category(rang_per_image),
+            f" de son âge. {prenom} présente de bonnes capacités en mémoire à court terme sur un support visuel."
+        )
+
+    if get_category(rang_per_image) == "zone élevée":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Mémoire des images ",
+            f"», {prenom} se situe dans la ",
+            get_category(rang_per_image),
+            f" de son âge. {prenom} présente de très bonnes capacités en mémoire à court terme sur un support visuel."
+        )
+
+    if get_category(rang_per_image) == "zone très élevée":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Mémoire des images ",
+            f"», {prenom} se situe dans la ",
+            get_category(rang_per_image),
+            f" de son âge. {prenom} présente d’excellentes bonnes capacités en mémoire à court terme sur un support visuel."
+        )
 
     # IMAGE
     para_img = doc.add_paragraph()
@@ -905,7 +1416,7 @@ def vitesse_de_traitement(IVT, RP, note_stand_code, rang_per_code, note_stand_sy
     VDT = doc.add_paragraph()
     texteBleu6 = VDT.add_run("Vitesse de traitement")
     texteBleu6.bold = True
-    texteBleu6.font.color.rgb = RGBColor(0, 100, 255)  # Couleur
+    texteBleu6.font.color.rgb = RGBColor(121, 181, 237)  # Couleur
     texteBleu6.underline = True
 
     ajouter_paragraphe_italique(
@@ -954,7 +1465,19 @@ def vitesse_de_traitement(IVT, RP, note_stand_code, rang_per_code, note_stand_sy
         para = cell.paragraphs[0]
         run = para.add_run(str(val))
         run.font.size = Pt(12)
-        run.font.color.rgb = RGBColor(237, 125, 49)  # orange
+        if i > 0:
+            if get_category(val) == "zone faible":
+                run.font.color.rgb = RGBColor(255, 41, 41)
+            if get_category(val) == "moyenne faible":
+                run.font.color.rgb = RGBColor(255, 105, 41)
+            if get_category(val) == "moyenne":
+                run.font.color.rgb = RGBColor(0, 0, 0)
+            if get_category(val) == "moyenne forte":
+                run.font.color.rgb = RGBColor(134, 255, 107)
+            if get_category(val) == "zone élevée":
+                run.font.color.rgb = RGBColor(59, 115, 47)
+            if get_category(val) == "zone très élevée":
+                run.font.color.rgb = RGBColor(76, 177, 217)
         para.alignment = WD_ALIGN_PARAGRAPH.CENTER
         cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
         set_cell_border(cell, top=bordure, bottom=bordure, start=bordure, end=bordure)
@@ -965,22 +1488,90 @@ def vitesse_de_traitement(IVT, RP, note_stand_code, rang_per_code, note_stand_sy
         para = cell.paragraphs[0]
         run = para.add_run(str(val))
         run.font.size = Pt(12)
-        run.font.color.rgb = RGBColor(237, 125, 49)  # orange
+        if i > 0:
+            if get_category(val) == "zone faible":
+                run.font.color.rgb = RGBColor(255, 41, 41)
+            if get_category(val) == "moyenne faible":
+                run.font.color.rgb = RGBColor(255, 105, 41)
+            if get_category(val) == "moyenne":
+                run.font.color.rgb = RGBColor(0, 0, 0)
+            if get_category(val) == "moyenne forte":
+                run.font.color.rgb = RGBColor(134, 255, 107)
+            if get_category(val) == "zone élevée":
+                run.font.color.rgb = RGBColor(59, 115, 47)
+            if get_category(val) == "zone très élevée":
+                run.font.color.rgb = RGBColor(76, 177, 217)
         para.alignment = WD_ALIGN_PARAGRAPH.CENTER
         cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
         set_cell_border(cell, top=bordure, bottom=bordure, start=bordure, end=bordure)
 
     doc.add_paragraph()
 
-    ajouter_paragraphe(
-        doc,
-        "",
-        "Lors du subtest « ",
-        "Code ",
-        f"» {prenom} présente des performances dans la ",
-        get_category(rang_per_code),
-        "comparativement aux enfants de son âge. Il montre  une certaine lenteur dans sa vitesse de traitement. De plus, il présente  de grandes difficultés grapho-motrices dans cette épreuve et se  disperse à plusieurs reprises, ce qui l’a pénalisé dans sa performance. " 
-    )
+    if get_category(rang_per_code) == "zone faible":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Code ",
+            f"» {prenom} présente des performances dans la ",
+            get_category(rang_per_code),
+            f" comparativement aux enfants de son âge. {prenom} fait preuve de difficultés dans la reconnaissance et la discrimination visuelle fine et montre une vitesse de traitement lente. "
+        )
+
+    if get_category(rang_per_code) == "moyenne faible":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Code ",
+            f"» {prenom} présente des performances dans la ",
+            get_category(rang_per_code),
+            f" comparativement aux enfants de son âge. {prenom} fait preuve de fragilités dans la reconnaissance et la discrimination visuelle fine et montre une vitesse de traitement ralentie."
+        )
+
+    if get_category(rang_per_code) == "moyenne":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Code ",
+            f"» {prenom} présente des performances dans la ",
+            get_category(rang_per_code),
+            f" comparativement aux enfants de son âge. {prenom} fait preuve de bonnes capacités dans la reconnaissance et la discrimination visuelle fine et montre une vitesse de traitement satisfaisante."
+        )
+
+    if get_category(rang_per_code) == "moyenne forte":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Code ",
+            f"» {prenom} présente des performances dans la ",
+            get_category(rang_per_code),
+            f" comparativement aux enfants de son âge. {prenom} fait preuve de bonnes capacités dans la reconnaissance et la discrimination visuelle fine et montre une bonne vitesse de traitement. "
+        )
+
+    if get_category(rang_per_code) == "zone élevée":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Code ",
+            f"» {prenom} présente des performances dans la ",
+            get_category(rang_per_code),
+            f" comparativement aux enfants de son âge. {prenom} fait preuve de très bonnes capacités dans la reconnaissance et la discrimination visuelle fine avec une vitesse de traitement plus que satisfaisante. "
+        )
+
+    if get_category(rang_per_code) == "zone très élevée":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors du subtest « ",
+            "Code ",
+            f"» {prenom} présente des performances dans la ",
+            get_category(rang_per_code),
+            f" comparativement aux enfants de son âge. {prenom} fait preuve d’excellentes capacités dans la reconnaissance et la discrimination visuelle fine fine avec une vitesse de traitement plus que satisfaisante. "
+        )
 
     # IMAGE
     para_img = doc.add_paragraph()
@@ -988,15 +1579,82 @@ def vitesse_de_traitement(IVT, RP, note_stand_code, rang_per_code, note_stand_sy
     run_img.add_picture("images/image_rien.jpg", width=Inches(1.5))  # Ajuste la taille si besoin
     para_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-    ajouter_paragraphe(
-        doc,
-        "",
-        "Lors de l’épreuve « ",
-        "Symboles",
-        f" », {prenom} se situe dans la ",
-        get_category(rang_per_symb),
-        f"de son âge. {prenom} présente une lenteur dans sa vitesse de traitement. Il présente également des  difficultés pour barrer les symboles et perd du temps en regardant le chronomètre à plusieurs reprises."
-    )
+    if get_category(rang_per_symb) == "":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors de l’épreuve « ",
+            "Symboles",
+            f" », {prenom} se situe dans la ",
+            get_category(rang_per_symb),
+            f" de son âge. {prenom} présente une lenteur dans sa vitesse de traitement. Il présente également des  difficultés pour barrer les symboles et perd du temps en regardant le chronomètre à plusieurs reprises." #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        )
+
+    if get_category(rang_per_symb) == "zone faible":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors de l’épreuve « ",
+            "Symboles",
+            f" », {prenom} se situe dans la ",
+            get_category(rang_per_symb),
+            f" de son âge, suggérant une vitesse de traitement lente lors de ce subtest."
+        )
+
+    if get_category(rang_per_symb) == "moyenne faible":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors de l’épreuve « ",
+            "Symboles",
+            f" », {prenom} se situe dans la ",
+            get_category(rang_per_symb),
+            f" de son âge, suggérant une certaine lenteur dans la vitesse de traitement lors de ce subtest."
+        )
+
+    if get_category(rang_per_symb) == "moyenne":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors de l’épreuve « ",
+            "Symboles",
+            f" », {prenom} se situe dans la ",
+            get_category(rang_per_symb),
+            f" de son âge, suggérant une bonne vitesse de traitement lors de ce subtest."
+        )
+
+    if get_category(rang_per_symb) == "moyenne forte":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors de l’épreuve « ",
+            "Symboles",
+            f" », {prenom} se situe dans la ",
+            get_category(rang_per_symb),
+            f" de son âge, suggérant une bonne vitesse de traitement lors de ce subtest."
+        )
+
+    if get_category(rang_per_symb) == "zone élevée":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors de l’épreuve « ",
+            "Symboles",
+            f" », {prenom} se situe dans la ",
+            get_category(rang_per_symb),
+            f" de son âge, suggérant une très bonne vitesse de traitement lors de ce subtest."
+        )
+    
+    if get_category(rang_per_symb) == "zone très élevée":
+        ajouter_paragraphe(
+            doc,
+            "",
+            "Lors de l’épreuve « ",
+            "Symboles",
+            f" », {prenom} se situe dans la ",
+            get_category(rang_per_symb),
+            f" de son âge, suggérant une excellente vitesse de traitement lors de ce subtest."
+        )
 
     # IMAGE
     para_img = doc.add_paragraph()
@@ -1477,6 +2135,40 @@ def evaluation_tdah(critere_a_1, critere_a_2, nom, prenom):
 
 def bilan_neuropsychologique(nom, prenom, date):
     pass
+
+
+def font_reset():
+    # Police désirée
+    font_name = "Times New Roman"
+    font_size = Pt(11)
+
+    # Parcourir tous les paragraphes
+    for para in doc.paragraphs:
+        for run in para.runs:
+            run.font.name = font_name
+            run.font.size = font_size
+
+    # Parcourir toutes les cellules des tables
+    for table in doc.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                for para in cell.paragraphs:
+                    for run in para.runs:
+                        run.font.name = font_name
+                        run.font.size = font_size
+
+def alignement_reset():
+    # Justifier tous les paragraphes hors tableaux
+    for paragraph in doc.paragraphs:
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+
+    # Justifier aussi le texte dans les tableaux
+    for table in doc.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                for paragraph in cell.paragraphs:
+                    paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+
 
 
 doc.save("bilantest.docx")
