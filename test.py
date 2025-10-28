@@ -1,0 +1,1 @@
+print(int(float(20.2)))
